@@ -1,0 +1,42 @@
+<html ng-app = "chat">
+<head>
+    <title>Chat with socket io and nodejs</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body ng-controller = "SocketController as socketCtrl">
+    <div id="nickWrap">
+        <p>Enter e username</p>
+        <p id="nickError"></p>
+        <form name = "authForm" id = "setNick" ng-controller="AuthController as authCtrl"
+ ng-submit="authForm.$valid && authCtrl.addUser(socketCtrl.socket)" novalidate>
+            <input size = "35" id = "nickname" type="text" ng-model = "authCtrl.user" required>
+            <input type="submit">
+        </form>
+    </div>
+    <div id = "contentWrap" ng-show="socketCtrl.viewChat">
+        <div id = "chatWrap">
+            <div id="chat" ng-controller="AllMessagesController as allMessages" id="users">
+                <ul style="height: 500px; overflow: auto">
+                    <li ng-repeat="message in allMessages.messages"><span class='msg'><b>{{message.nick}}:</b>  "{{message.msg}}"</span></li>
+                </ul>
+            </div>
+            <form name = "messageForm " id = "send-message" ng-controller="NewMessageController as newMsgCtrl"
+ ng-submit="messageForm.$valid && newMsgCtrl.addMessage(socketCtrl.socket)">
+                <input type = "text" size="35" id="message" ng-model="newMsgCtrl.message">
+                <input type="submit">
+            </form>
+         </div>
+        <div ng-controller="AllUsersController as allUsers" id="users">
+            <ul style="height: 500px; overflow: auto">
+                <li ng-repeat="user in allUsers.usernames">{{usernames[user]}}</li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/angular.min.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
+
+</body>
+</html>
